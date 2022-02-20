@@ -3,6 +3,7 @@
 const String appTitle = 'Flutter Chat App',
     restorationScopeId = 'app',
 // Chat Room
+    chatRoomDefaultUsername = 'Аноним',
     chatRoomAuthorInputHint = 'Введите ник',
     chatRoomMessageInputHint = 'Сообщение',
 // Settings

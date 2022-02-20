@@ -15,7 +15,9 @@ class ChatMessageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const CircleAvatar(),
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
       title: Text(author.name),
       subtitle: Text(message),
     );

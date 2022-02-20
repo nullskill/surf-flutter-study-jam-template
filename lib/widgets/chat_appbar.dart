@@ -21,9 +21,12 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Expanded(
               child: TextField(
-                decoration: InputDecoration(
+                // TODO: Move to the theme
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                cursorColor: Theme.of(context).colorScheme.onPrimary,
+                decoration: InputDecoration.collapsed(
                   hintText: chatRoomAuthorInputHint,
-                  // TODO: Move to the theme
+                  // TODO: Move to the styles
                   hintStyle: const TextStyle(
                     color: Colors.grey,
                     fontSize: 16,

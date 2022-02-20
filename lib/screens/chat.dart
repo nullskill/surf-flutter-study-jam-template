@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:surf_practice_chat_flutter/assets/strings/strings.dart';
 import 'package:surf_practice_chat_flutter/data/chat/models/user.dart';
 import 'package:surf_practice_chat_flutter/data/chat/repository/repository.dart';
 import 'package:surf_practice_chat_flutter/widgets/chat_appbar.dart';
@@ -22,13 +22,11 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   late ChatUserDto author;
 
-  static const defaultUsername = 'unknown';
-
   @override
   void initState() {
     super.initState();
 
-    author = const ChatUserDto(name: defaultUsername);
+    author = const ChatUserDto(name: chatRoomDefaultUsername);
   }
 
   @override
@@ -36,35 +34,32 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: const ChatAppBar(),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return ChatMessageItem(author: author, message: 'some message');
-                  },
-                ),
-              ),
-              ChatMessageInput(
-                onPressed: (message) {
-                  // TODO: Refactor
-                  print('new message: $message');
-                  // BlocProvider.of<ChatRoomBloc>(context).add(
-                  //   SendMessage(
-                  //     chatMessage: ChatMessage(
-                  //       author: user,
-                  //       message: message,
-                  //       time:
-                  //           DateTime.now().millisecondsSinceEpoch.toString(),
-                  //     ),
-                  //   ),
-                  // );
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return ChatMessageItem(author: author, message: 'some message');
                 },
               ),
-            ],
-          ),
+            ),
+            ChatMessageInput(
+              onPressed: (message) {
+                // TODO: Refactor
+                print('new message: $message');
+                // BlocProvider.of<ChatRoomBloc>(context).add(
+                //   SendMessage(
+                //     chatMessage: ChatMessage(
+                //       author: user,
+                //       message: message,
+                //       time:
+                //           DateTime.now().millisecondsSinceEpoch.toString(),
+                //     ),
+                //   ),
+                // );
+              },
+            ),
+          ],
         ),
       ),
     );
