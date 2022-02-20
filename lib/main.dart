@@ -5,7 +5,8 @@ import 'package:surf_practice_chat_flutter/assets/strings/strings.dart';
 import 'package:surf_practice_chat_flutter/data/chat/repository/firebase.dart';
 import 'package:surf_practice_chat_flutter/firebase_options.dart';
 import 'package:surf_practice_chat_flutter/screens/chat.dart';
-import 'package:surf_practice_chat_flutter/service/bloc/messages_bloc.dart';
+import 'package:surf_practice_chat_flutter/service/messages_bloc/messages_bloc.dart';
+import 'package:surf_practice_chat_flutter/service/send_message_bloc/send_message_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
     // TODO: Refactor dependencies via Provider
     final chatRepository = ChatRepositoryFirebase(FirebaseFirestore.instance);
     final messagesBloc = MessagesBloc(chatRepository)..add(MessagesRefresh());
+    final sendMessageBloc = SendMessageBloc(chatRepository, messagesBloc);
 
     return MaterialApp(
       title: appTitle,
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
       home: ChatScreen(
         chatRepository: chatRepository,
         messagesBloc: messagesBloc,
+        sendMessageBloc: sendMessageBloc,
       ),
     );
   }

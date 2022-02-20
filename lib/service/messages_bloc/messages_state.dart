@@ -13,6 +13,7 @@ class MessagesLoadInProgress extends MessagesState {}
 
 class MessagesLoadSuccess extends MessagesState {
   final List<ChatMessageDto> messages;
+
   const MessagesLoadSuccess(this.messages);
 
   @override

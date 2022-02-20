@@ -8,3 +8,12 @@ abstract class MessagesEvent extends Equatable {
 }
 
 class MessagesRefresh extends MessagesEvent {}
+
+class MessagesRefreshFromData extends MessagesEvent {
+  final List<ChatMessageDto> data;
+
+  const MessagesRefreshFromData(this.data);
+
+  @override
+  List<Object> get props => [data];
+}
