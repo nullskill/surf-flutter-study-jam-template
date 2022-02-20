@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:surf_practice_chat_flutter/data/chat/models/user.dart';
 import 'package:surf_practice_chat_flutter/data/chat/repository/repository.dart';
+import 'package:surf_practice_chat_flutter/widgets/chat_appbar.dart';
 import 'package:surf_practice_chat_flutter/widgets/chat_message_input.dart';
 import 'package:surf_practice_chat_flutter/widgets/chat_message_item.dart';
 
@@ -33,21 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Icon(Icons.refresh),
-          ),
-          // TODO:  Make settings screen
-          // IconButton(
-          //   icon: const Icon(Icons.settings),
-          //   onPressed: () {
-          //     Navigator.restorablePushNamed(context, settingsRouteName);
-          //   },
-          // ),
-        ],
-      ),
+      appBar: const ChatAppBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8),

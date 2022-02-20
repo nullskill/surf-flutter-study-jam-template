@@ -35,7 +35,6 @@ class _ChatMessageInputState extends State<ChatMessageInput> {
             child: TextField(
               controller: _controller,
               decoration: const InputDecoration(
-                // TODO: Move to the consts
                 hintText: chatRoomMessageInputHint,
                 // TODO: Move to the theme
                 hintStyle: TextStyle(

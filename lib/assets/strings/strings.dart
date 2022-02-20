@@ -3,6 +3,7 @@
 const String appTitle = 'Flutter Chat App',
     restorationScopeId = 'app',
 // Chat Room
+    chatRoomAuthorInputHint = 'Введите ник',
     chatRoomMessageInputHint = 'Сообщение',
 // Settings
     settingsRouteName = '/settings',
