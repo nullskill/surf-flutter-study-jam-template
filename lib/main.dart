@@ -5,15 +5,16 @@ import 'package:surf_practice_chat_flutter/assets/strings/strings.dart';
 import 'package:surf_practice_chat_flutter/data/chat/repository/firebase.dart';
 import 'package:surf_practice_chat_flutter/firebase_options.dart';
 import 'package:surf_practice_chat_flutter/screens/chat.dart';
+import 'package:surf_practice_chat_flutter/service/bloc/messages_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform(
-      androidKey: 'AIzaSyCXU5f25S_SUeVv7cAzoeF373kHk4Hv2dE',
-      iosKey: 'AIzaSyAjvNoe31ZMSakjKFOkhbrZBsj3RyW6plo',
-      webKey: 'AIzaSyD40PR_fizjSYtCZEtXgwq_5LdJu2w2zIs',
+      androidKey: 'AIzaSyAgleMBLWGeOQHnGpAyCMDsxoz4CdK46Fg',
+      iosKey: 'AIzaSyCn005OVun4NhDkvTpjhNjhTvAQPUPgGHU',
+      webKey: 'AIzaSyDaj-LxNcWd4Onq0WcjsB7c-6O3F-onHgU',
     ),
   );
 
@@ -25,7 +26,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Refactor dependencies via Provider
     final chatRepository = ChatRepositoryFirebase(FirebaseFirestore.instance);
+    final messagesBloc = MessagesBloc(chatRepository)..add(MessagesRefresh());
 
     return MaterialApp(
       title: appTitle,
@@ -36,6 +39,7 @@ class MyApp extends StatelessWidget {
       ),
       home: ChatScreen(
         chatRepository: chatRepository,
+        messagesBloc: messagesBloc,
       ),
     );
   }

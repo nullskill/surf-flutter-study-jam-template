@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:surf_practice_chat_flutter/assets/strings/strings.dart';
 
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final ValueChanged<String> onChangeNickname;
+  final VoidCallback onRefreshMessages;
+
   const ChatAppBar({
     Key? key,
+    required this.onRefreshMessages,
+    required this.onChangeNickname,
   }) : super(key: key);
 
   @override
@@ -21,6 +26,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Expanded(
               child: TextField(
+                onChanged: (value) => onChangeNickname(value),
                 // TODO: Move to the theme
                 style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                 cursorColor: Theme.of(context).colorScheme.onPrimary,
@@ -35,12 +41,12 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Icon(
+            IconButton(
+              icon: Icon(
                 Icons.refresh,
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
+              onPressed: onRefreshMessages,
             ),
             // TODO:  Make settings screen
             // IconButton(

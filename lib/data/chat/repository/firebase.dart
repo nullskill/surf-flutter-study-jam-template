@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:surf_practice_chat_flutter/data/chat/models/geolocation.dart';
 import 'package:surf_practice_chat_flutter/data/chat/models/message.dart';
 import 'package:surf_practice_chat_flutter/data/chat/models/user.dart';
@@ -7,6 +6,7 @@ import 'package:surf_practice_chat_flutter/data/chat/repository/repository.dart'
 
 class ChatRepositoryFirebase implements ChatRepository {
   static const String _messagesCollectionKey = 'messages';
+  // TODO: Remove this limit
   static const int _messagesLimit = 20;
 
   final FirebaseFirestore _firebaseClient;
@@ -17,11 +17,8 @@ class ChatRepositoryFirebase implements ChatRepository {
 
   @override
   Future<List<ChatMessageDto>> get messages async {
-    final result = await _firebaseClient
-        .collection(_messagesCollectionKey)
-        .limit(_messagesLimit)
-        .orderBy('created')
-        .get();
+    final result =
+        await _firebaseClient.collection(_messagesCollectionKey).limit(_messagesLimit).orderBy('created').get();
 
     return result.docs.map(_parseFirebaseDataToLocal).toList();
   }
@@ -75,8 +72,7 @@ class ChatRepositoryFirebase implements ChatRepository {
     }
 
     if (name.length > ChatRepository.maxNameLength) {
-      throw const InvalidNameException(
-          'Name cannot contain more than ${ChatRepository.maxNameLength} symbols');
+      throw const InvalidNameException('Name cannot contain more than ${ChatRepository.maxNameLength} symbols');
     }
   }
 
@@ -86,8 +82,7 @@ class ChatRepositoryFirebase implements ChatRepository {
     }
 
     if (message.length > ChatRepository.maxMessageLength) {
-      throw const InvalidNameException(
-          'Message cannot contain more than ${ChatRepository.maxMessageLength} symbols');
+      throw const InvalidNameException('Message cannot contain more than ${ChatRepository.maxMessageLength} symbols');
     }
   }
 
