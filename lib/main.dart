@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:surf_practice_chat_flutter/assets/strings/strings.dart';
 import 'package:surf_practice_chat_flutter/data/chat/repository/firebase.dart';
 import 'package:surf_practice_chat_flutter/firebase_options.dart';
 import 'package:surf_practice_chat_flutter/screens/chat.dart';
@@ -27,6 +28,8 @@ class MyApp extends StatelessWidget {
     final chatRepository = ChatRepositoryFirebase(FirebaseFirestore.instance);
 
     return MaterialApp(
+      title: appTitle,
+      restorationScopeId: restorationScopeId,
       theme: ThemeData(
         colorSchemeSeed: Colors.deepPurple,
         useMaterial3: true,
