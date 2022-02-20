@@ -16,6 +16,10 @@ class ChatMessageItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
+        child: Text(
+          author.name.characters.first,
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+        ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       title: Text(author.name),
