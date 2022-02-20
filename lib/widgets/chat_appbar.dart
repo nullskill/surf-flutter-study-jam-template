@@ -7,7 +7,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   }) : super(key: key);
 
   @override
-  Size get preferredSize => const Size(double.infinity, 120);
+  Size get preferredSize => const Size(double.infinity, 110);
 
   @override
   Widget build(BuildContext context) {
