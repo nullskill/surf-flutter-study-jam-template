@@ -48,7 +48,11 @@ class ChatScreen extends StatelessWidget {
                       itemCount: state.messages.length,
                       itemBuilder: (context, index) {
                         final data = state.messages[index];
-                        return ChatMessageItem(author: data.author, message: data.message);
+                        return ChatMessageItem(
+                          author: data.author,
+                          message: data.message,
+                          isMine: data.author.name == author.value.name,
+                        );
                       },
                     );
                   } else {
