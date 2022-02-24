@@ -65,74 +65,116 @@ class _ChatScreenState extends State<ChatScreen> {
         onRefreshMessages: _onRefreshMessages,
         onChangeNickname: _onChangeNickname,
       ),
-      floatingActionButton: AnimatedBuilder(
-        animation: _isScrollAtEnd,
-        builder: (context, child) {
-          if (_isScrollAtEnd.value) return const SizedBox.shrink();
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 70),
-            child: SizedBox(
-              width: 50,
-              height: 50,
-              child: FloatingActionButton(
-                // backgroundColor: AppColor.onPrimary,
-                onPressed: _onFabTap,
-                child: Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  size: 32,
-                ),
-                // backgroundColor: Colors.black,
-              ),
-            ),
-          );
-        },
+      floatingActionButton: _Fab(
+        isScrollAtEnd: _isScrollAtEnd,
+        onFabTap: _onFabTap,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: BlocBuilder<MessagesBloc, MessagesState>(
-                bloc: widget.messagesBloc,
-                builder: (context, state) {
-                  if (state is MessagesLoadSuccess) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: ListView.builder(
-                        reverse: true,
-                        controller: _scrollController,
-                        itemCount: state.messages.length,
-                        itemBuilder: (context, index) {
-                          final data = state.messages[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: ChatMessageItem(
-                              author: data.author,
-                              message: data.message,
-                              isMine: data.author.name == _author.value.name,
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
-            ),
-            ChatMessageInput(
-              onPressed: (message) {
-                widget.sendMessageBloc.add(
-                  SendMessageStart(_author.value.name, message),
-                );
+      body: _Body(
+        widget: widget,
+        scrollController: _scrollController,
+        author: _author,
+      ),
+    );
+  }
+}
+
+class _Body extends StatelessWidget {
+  const _Body({
+    Key? key,
+    required this.widget,
+    required ScrollController scrollController,
+    required ValueNotifier<ChatUserDto> author,
+  })  : _scrollController = scrollController,
+        _author = author,
+        super(key: key);
+
+  final ChatScreen widget;
+  final ScrollController _scrollController;
+  final ValueNotifier<ChatUserDto> _author;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+            child: BlocBuilder<MessagesBloc, MessagesState>(
+              bloc: widget.messagesBloc,
+              builder: (context, state) {
+                if (state is MessagesLoadSuccess) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: ListView.builder(
+                      reverse: true,
+                      controller: _scrollController,
+                      itemCount: state.messages.length,
+                      itemBuilder: (context, index) {
+                        final data = state.messages[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: ChatMessageItem(
+                            author: data.author,
+                            message: data.message,
+                            isMine: data.author.name == _author.value.name,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
               },
             ),
-          ],
-        ),
+          ),
+          ChatMessageInput(
+            onPressed: (message) {
+              widget.sendMessageBloc.add(
+                SendMessageStart(_author.value.name, message),
+              );
+            },
+          ),
+        ],
       ),
+    );
+  }
+}
+
+class _Fab extends StatelessWidget {
+  final ValueNotifier<bool> isScrollAtEnd;
+  final VoidCallback onFabTap;
+  const _Fab({
+    Key? key,
+    required this.isScrollAtEnd,
+    required this.onFabTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: isScrollAtEnd,
+      builder: (context, child) {
+        if (isScrollAtEnd.value) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 70),
+          child: SizedBox(
+            width: 50,
+            height: 50,
+            child: FloatingActionButton(
+              // backgroundColor: AppColor.onPrimary,
+              onPressed: onFabTap,
+              child: Icon(
+                Icons.keyboard_arrow_down,
+                color: Theme.of(context).colorScheme.onPrimary,
+                size: 32,
+              ),
+              // backgroundColor: Colors.black,
+            ),
+          ),
+        );
+      },
     );
   }
 }
