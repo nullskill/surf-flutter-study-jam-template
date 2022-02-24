@@ -39,10 +39,7 @@ class _ChatMessageInputState extends State<ChatMessageInput> {
                 decoration: const InputDecoration(
                   hintText: chatRoomMessageInputHint,
                   // TODO: Move to the theme
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                  ),
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
                   filled: true,
                   enabledBorder: outlineInputBorder,
                   disabledBorder: outlineInputBorder,
@@ -53,12 +50,14 @@ class _ChatMessageInputState extends State<ChatMessageInput> {
                 ),
               ),
             ),
+            const SizedBox(width: 6),
             ElevatedButton(
               onPressed: () {
                 widget.onPressed(_controller.text);
                 _controller.clear();
               },
               style: ElevatedButton.styleFrom(
+                minimumSize: Size.zero,
                 padding: EdgeInsets.zero,
                 shape: const CircleBorder(),
               ),

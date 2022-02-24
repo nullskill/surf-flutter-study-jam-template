@@ -42,6 +42,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _isScrollAtEnd.dispose();
+    _author.dispose();
 
     super.dispose();
   }
@@ -65,14 +67,15 @@ class _ChatScreenState extends State<ChatScreen> {
         onRefreshMessages: _onRefreshMessages,
         onChangeNickname: _onChangeNickname,
       ),
-      floatingActionButton: _Fab(
-        isScrollAtEnd: _isScrollAtEnd,
-        onFabTap: _onFabTap,
-      ),
       body: _Body(
         widget: widget,
         scrollController: _scrollController,
         author: _author,
+      ),
+      floatingActionButtonLocation: _EndFloatFabLocation(),
+      floatingActionButton: _Fab(
+        isScrollAtEnd: _isScrollAtEnd,
+        onFabTap: _onFabTap,
       ),
     );
   }
@@ -163,18 +166,25 @@ class _Fab extends StatelessWidget {
             width: 50,
             height: 50,
             child: FloatingActionButton(
-              // backgroundColor: AppColor.onPrimary,
               onPressed: onFabTap,
               child: Icon(
                 Icons.keyboard_arrow_down,
                 color: Theme.of(context).colorScheme.onPrimary,
                 size: 32,
               ),
-              // backgroundColor: Colors.black,
             ),
           ),
         );
       },
     );
+  }
+}
+
+/// Custom offset for [floatingActionButtonLocation] in [Scaffold]
+class _EndFloatFabLocation extends StandardFabLocation with FabEndOffsetX, FabFloatOffsetY {
+  @override
+  double getOffsetX(ScaffoldPrelayoutGeometry scaffoldGeometry, double adjustment) {
+    final double directionalAdjustment = scaffoldGeometry.textDirection == TextDirection.ltr ? -8 : 8;
+    return super.getOffsetX(scaffoldGeometry, adjustment) - directionalAdjustment;
   }
 }
