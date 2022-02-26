@@ -49,7 +49,9 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  void _onChangeNickname(String nickname) => _author.value = ChatUserDto(name: nickname);
+  void _onChangeNickname(String nickname) {
+    _author.value = ChatUserDto(name: nickname.isEmpty ? chatRoomDefaultUsername : nickname);
+  }
 
   void _onRefreshMessages() => widget.messagesBloc.add(MessagesRefresh());
 
@@ -84,6 +86,10 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class _Body extends StatelessWidget {
+  final ChatScreen widget;
+  final ScrollController _scrollController;
+  final ValueNotifier<ChatUserDto> _author;
+
   const _Body({
     Key? key,
     required this.widget,
@@ -93,12 +99,16 @@ class _Body extends StatelessWidget {
         _author = author,
         super(key: key);
 
-  final ChatScreen widget;
-  final ScrollController _scrollController;
-  final ValueNotifier<ChatUserDto> _author;
-
   @override
   Widget build(BuildContext context) {
+    final colors = <MaterialColor>[
+      Colors.red,
+      Colors.blue,
+      Colors.green,
+      Colors.orange,
+      Colors.cyan,
+    ];
+
     return SafeArea(
       child: Column(
         children: [
@@ -115,11 +125,13 @@ class _Body extends StatelessWidget {
                       itemCount: state.messages.length,
                       itemBuilder: (context, index) {
                         final data = state.messages[index];
+                        final colorIndex = data.author.name.hashCode % colors.length;
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 8),
                           child: ChatMessageItem(
                             author: data.author,
                             message: data.message,
+                            color: colors[colorIndex],
                             isMine: data.author.name == _author.value.name,
                           ),
                         );

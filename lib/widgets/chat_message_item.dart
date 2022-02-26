@@ -6,12 +6,14 @@ import 'package:surf_practice_chat_flutter/data/chat/models/user.dart';
 class ChatMessageItem extends StatelessWidget {
   final ChatUserDto author;
   final String message;
+  final Color color;
   final bool isMine;
 
   const ChatMessageItem({
     Key? key,
     required this.author,
     required this.message,
+    required this.color,
     this.isMine = false,
   }) : super(key: key);
 
@@ -30,7 +32,7 @@ class ChatMessageItem extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: color,
           ),
         Column(
           crossAxisAlignment: isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -40,13 +42,14 @@ class ChatMessageItem extends StatelessWidget {
               child: Text(
                 author.name,
                 style: TextStyle(
+                  color: color,
                   fontWeight: isMine ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
             ),
             Container(
               padding: const EdgeInsets.all(8),
-              margin: const EdgeInsets.symmetric(horizontal: 6),
+              margin: const EdgeInsets.fromLTRB(6, 2, 6, 0),
               decoration: BoxDecoration(
                 color: isMine
                     ? Theme.of(context).colorScheme.secondary.withOpacity(0.75)
@@ -85,7 +88,7 @@ class ChatMessageItem extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: color,
           ),
       ],
     );

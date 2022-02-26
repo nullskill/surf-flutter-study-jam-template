@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:surf_practice_chat_flutter/assets/colors/colors.dart';
 import 'package:surf_practice_chat_flutter/assets/strings/strings.dart';
 
+/// Chat App bar
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   final ValueChanged<String> onChangeNickname;
   final VoidCallback onRefreshMessages;
@@ -34,7 +36,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                   hintText: chatRoomAuthorInputHint,
                   // TODO: Move to the styles
                   hintStyle: const TextStyle(
-                    color: Colors.grey,
+                    color: AppColors.textFieldHint,
                     fontSize: 16,
                   ),
                   focusColor: Theme.of(context).colorScheme.onPrimary,
