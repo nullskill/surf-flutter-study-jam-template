@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:surf_practice_chat_flutter/assets/colors/colors.dart';
 import 'package:surf_practice_chat_flutter/assets/res/borders.dart';
 import 'package:surf_practice_chat_flutter/data/chat/models/user.dart';
 
@@ -51,9 +52,7 @@ class ChatMessageItem extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               margin: const EdgeInsets.fromLTRB(6, 2, 6, 0),
               decoration: BoxDecoration(
-                color: isMine
-                    ? Theme.of(context).colorScheme.secondary.withOpacity(0.75)
-                    : Theme.of(context).primaryColor.withOpacity(0.75),
+                color: isMine ? AppColors.selfBubble : AppColors.bubble,
                 borderRadius: isMine
                     ? const BorderRadius.only(
                         topLeft: circleRadius20,
@@ -73,7 +72,7 @@ class ChatMessageItem extends StatelessWidget {
               child: Text(
                 message,
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: isMine ? Theme.of(context).colorScheme.onPrimary : null,
                 ),
               ),
             ),
