@@ -35,17 +35,22 @@ class ChatMessageItem extends StatelessWidget {
         Column(
           crossAxisAlignment: isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            Text(
-              author.name,
-              style: TextStyle(
-                fontWeight: isMine ? FontWeight.bold : FontWeight.normal,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Text(
+                author.name,
+                style: TextStyle(
+                  fontWeight: isMine ? FontWeight.bold : FontWeight.normal,
+                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.all(8),
               margin: const EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(
-                color: isMine ? Theme.of(context).colorScheme.secondary : Theme.of(context).primaryColor,
+                color: isMine
+                    ? Theme.of(context).colorScheme.secondary.withOpacity(0.75)
+                    : Theme.of(context).primaryColor.withOpacity(0.75),
                 borderRadius: isMine
                     ? const BorderRadius.only(
                         topLeft: circleRadius20,
@@ -65,7 +70,7 @@ class ChatMessageItem extends StatelessWidget {
               child: Text(
                 message,
                 style: TextStyle(
-                  color: isMine ? Colors.white : Colors.black,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
             ),

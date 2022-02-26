@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:surf_practice_chat_flutter/assets/colors/colors.dart';
 import 'package:surf_practice_chat_flutter/assets/strings/strings.dart';
 import 'package:surf_practice_chat_flutter/data/chat/models/user.dart';
 import 'package:surf_practice_chat_flutter/data/chat/repository/repository.dart';
@@ -63,6 +64,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: ChatAppBar(
         onRefreshMessages: _onRefreshMessages,
         onChangeNickname: _onChangeNickname,
@@ -161,7 +163,7 @@ class _Fab extends StatelessWidget {
       builder: (context, child) {
         if (isScrollAtEnd.value) return const SizedBox.shrink();
         return Padding(
-          padding: const EdgeInsets.only(bottom: 70),
+          padding: const EdgeInsets.only(bottom: 65),
           child: SizedBox(
             width: 50,
             height: 50,

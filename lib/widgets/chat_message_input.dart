@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:surf_practice_chat_flutter/assets/colors/colors.dart';
 import 'package:surf_practice_chat_flutter/assets/res/borders.dart';
 import 'package:surf_practice_chat_flutter/assets/strings/strings.dart';
 
@@ -39,7 +40,8 @@ class _ChatMessageInputState extends State<ChatMessageInput> {
                 decoration: const InputDecoration(
                   hintText: chatRoomMessageInputHint,
                   // TODO: Move to the theme
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
+                  hintStyle: TextStyle(color: AppColors.textFieldHint, fontSize: 16),
+                  fillColor: AppColors.background,
                   filled: true,
                   enabledBorder: outlineInputBorder,
                   disabledBorder: outlineInputBorder,
@@ -67,13 +69,12 @@ class _ChatMessageInputState extends State<ChatMessageInput> {
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
-                    // TODO: Move to the colors
-                    colors: [Color(0xffffae88), Color(0xff8f93ea)],
+                    colors: [AppColors.gradientStart, AppColors.gradientEnd],
                   ),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.send,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
             )
