@@ -137,10 +137,17 @@ class _Body extends StatelessWidget {
                       );
                     },
                   );
-                } else {
+                } else if (state is MessagesLoadFailure) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: Text(chatRoomFailure),
                   );
+                } else {
+                  if (widget.messagesBloc.requestNumber == 1) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return const SizedBox.shrink();
                 }
               },
             ),
