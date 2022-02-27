@@ -28,22 +28,24 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final ValueNotifier<ChatUserDto> _author = ValueNotifier(const ChatUserDto(name: chatRoomDefaultUsername));
+  final _author = ValueNotifier<ChatUserDto>(const ChatUserDto(name: chatRoomDefaultUsername));
 
   final _scrollController = ScrollController();
-  final ValueNotifier<bool> _isScrollAtEnd = ValueNotifier(true);
+  final _scrollPosition = ValueNotifier<double>(0);
 
   @override
   void initState() {
     super.initState();
 
-    _scrollController.addListener(() => _isScrollAtEnd.value = _scrollController.position.atEdge);
+    _scrollController.addListener(() {
+      _scrollPosition.value = _scrollController.position.atEdge && _scrollController.position.pixels == 0 ? 0 : 1;
+    });
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _isScrollAtEnd.dispose();
+    _scrollPosition.dispose();
     _author.dispose();
 
     super.dispose();
@@ -78,7 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       floatingActionButtonLocation: _EndFloatFabLocation(),
       floatingActionButton: _Fab(
-        isScrollAtEnd: _isScrollAtEnd,
+        scrollPosition: _scrollPosition,
         onFabTap: _onFabTap,
       ),
     );
@@ -99,16 +101,16 @@ class _Body extends StatelessWidget {
         _author = author,
         super(key: key);
 
+  static const colors = <MaterialColor>[
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.orange,
+    Colors.cyan,
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final colors = <MaterialColor>[
-      Colors.red,
-      Colors.blue,
-      Colors.green,
-      Colors.orange,
-      Colors.cyan,
-    ];
-
     return SafeArea(
       child: Column(
         children: [
@@ -117,26 +119,23 @@ class _Body extends StatelessWidget {
               bloc: widget.messagesBloc,
               builder: (context, state) {
                 if (state is MessagesLoadSuccess) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: ListView.builder(
-                      reverse: true,
-                      controller: _scrollController,
-                      itemCount: state.messages.length,
-                      itemBuilder: (context, index) {
-                        final data = state.messages[index];
-                        final colorIndex = data.author.name.hashCode % colors.length;
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: ChatMessageItem(
-                            author: data.author,
-                            message: data.message,
-                            color: colors[colorIndex],
-                            isMine: data.author.name == _author.value.name,
-                          ),
-                        );
-                      },
-                    ),
+                  return ListView.builder(
+                    reverse: true,
+                    controller: _scrollController,
+                    itemCount: state.messages.length,
+                    itemBuilder: (context, index) {
+                      final data = state.messages[index];
+                      final colorIndex = data.author.name.hashCode % colors.length;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: ChatMessageItem(
+                          author: data.author,
+                          message: data.message,
+                          color: colors[colorIndex],
+                          isMine: data.author.name == _author.value.name,
+                        ),
+                      );
+                    },
                   );
                 } else {
                   return const Center(
@@ -160,33 +159,39 @@ class _Body extends StatelessWidget {
 }
 
 class _Fab extends StatelessWidget {
-  final ValueNotifier<bool> isScrollAtEnd;
+  final ValueNotifier<double> scrollPosition;
   final VoidCallback onFabTap;
   const _Fab({
     Key? key,
-    required this.isScrollAtEnd,
+    required this.scrollPosition,
     required this.onFabTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: isScrollAtEnd,
-      builder: (context, child) {
-        if (isScrollAtEnd.value) return const SizedBox.shrink();
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 65),
-          child: SizedBox(
-            width: 50,
-            height: 50,
-            child: FloatingActionButton(
-              onPressed: onFabTap,
-              child: Icon(
-                Icons.keyboard_arrow_down,
-                color: Theme.of(context).colorScheme.onPrimary,
-                size: 32,
-              ),
-            ),
+    return ValueListenableBuilder(
+      valueListenable: scrollPosition,
+      child: SizedBox(
+        width: 50,
+        height: 50,
+        child: FloatingActionButton(
+          onPressed: onFabTap,
+          backgroundColor: AppColors.gradientEnd,
+          child: Icon(
+            Icons.keyboard_arrow_down,
+            color: Theme.of(context).colorScheme.onPrimary,
+            size: 32,
+          ),
+        ),
+      ),
+      builder: (context, double value, child) {
+        return AnimatedScale(
+          scale: value,
+          curve: Curves.easeIn,
+          duration: const Duration(milliseconds: 250),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 70),
+            child: child,
           ),
         );
       },

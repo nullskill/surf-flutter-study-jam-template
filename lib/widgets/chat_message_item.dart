@@ -21,75 +21,78 @@ class ChatMessageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authorName = author.name.characters.first.toUpperCase();
-    return Row(
-      mainAxisAlignment: isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
-      children: [
-        if (!isMine)
-          CircleAvatar(
-            child: Text(
-              authorName,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            backgroundColor: color,
-          ),
-        Column(
-          crossAxisAlignment: isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        mainAxisAlignment: isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          if (!isMine)
+            CircleAvatar(
               child: Text(
-                author.name,
+                authorName,
                 style: TextStyle(
-                  color: color,
-                  fontWeight: isMine ? FontWeight.bold : FontWeight.normal,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+              backgroundColor: color,
             ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              margin: const EdgeInsets.fromLTRB(6, 2, 6, 0),
-              decoration: BoxDecoration(
-                color: isMine ? AppColors.selfBubble : AppColors.bubble,
-                borderRadius: isMine
-                    ? const BorderRadius.only(
-                        topLeft: circleRadius20,
-                        bottomLeft: circleRadius20,
-                        bottomRight: circleRadius20,
-                      )
-                    : const BorderRadius.only(
-                        topRight: circleRadius20,
-                        bottomLeft: circleRadius20,
-                        bottomRight: circleRadius20,
-                      ),
-              ),
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.65,
-                minHeight: 30,
-              ),
-              child: Text(
-                message,
-                style: TextStyle(
-                  color: isMine ? Theme.of(context).colorScheme.onPrimary : null,
+          Column(
+            crossAxisAlignment: isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: Text(
+                  author.name,
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: isMine ? FontWeight.bold : FontWeight.normal,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        if (isMine)
-          CircleAvatar(
-            child: Text(
-              authorName,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontWeight: FontWeight.bold,
+              Container(
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.fromLTRB(6, 2, 6, 0),
+                decoration: BoxDecoration(
+                  color: isMine ? AppColors.selfBubble : AppColors.bubble,
+                  borderRadius: isMine
+                      ? const BorderRadius.only(
+                          topLeft: circleRadius20,
+                          bottomLeft: circleRadius20,
+                          bottomRight: circleRadius20,
+                        )
+                      : const BorderRadius.only(
+                          topRight: circleRadius20,
+                          bottomLeft: circleRadius20,
+                          bottomRight: circleRadius20,
+                        ),
+                ),
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.65,
+                  minHeight: 30,
+                ),
+                child: Text(
+                  message,
+                  style: TextStyle(
+                    color: isMine ? Theme.of(context).colorScheme.onPrimary : null,
+                  ),
+                ),
               ),
-            ),
-            backgroundColor: color,
+            ],
           ),
-      ],
+          if (isMine)
+            CircleAvatar(
+              child: Text(
+                authorName,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              backgroundColor: color,
+            ),
+        ],
+      ),
     );
   }
 }
