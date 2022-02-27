@@ -55,7 +55,10 @@ class _ChatScreenState extends State<ChatScreen> {
     _author.value = ChatUserDto(name: nickname.isEmpty ? chatRoomDefaultUsername : nickname);
   }
 
-  void _onRefreshMessages() => widget.messagesBloc.add(MessagesRefresh());
+  void _onRefreshMessages() {
+    _scrollPosition.value = 0;
+    widget.messagesBloc.add(MessagesRefresh());
+  }
 
   void _onFabTap() {
     _scrollController.animateTo(
@@ -118,7 +121,11 @@ class _Body extends StatelessWidget {
             child: BlocBuilder<MessagesBloc, MessagesState>(
               bloc: widget.messagesBloc,
               builder: (context, state) {
-                if (state is MessagesLoadSuccess) {
+                if (state is MessagesLoadInProgress && widget.messagesBloc.requestNumber == 1) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is MessagesLoadSuccess) {
                   return ListView.builder(
                     reverse: true,
                     controller: _scrollController,
@@ -142,11 +149,6 @@ class _Body extends StatelessWidget {
                     child: Text(chatRoomFailure),
                   );
                 } else {
-                  if (widget.messagesBloc.requestNumber == 1) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
                   return const SizedBox.shrink();
                 }
               },
