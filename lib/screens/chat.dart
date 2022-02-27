@@ -187,12 +187,10 @@ class _Fab extends StatelessWidget {
       builder: (context, double value, child) {
         return AnimatedScale(
           scale: value,
+          alignment: Alignment.center,
           curve: Curves.easeIn,
           duration: const Duration(milliseconds: 250),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 70),
-            child: child,
-          ),
+          child: child,
         );
       },
     );
@@ -205,5 +203,10 @@ class _EndFloatFabLocation extends StandardFabLocation with FabEndOffsetX, FabFl
   double getOffsetX(ScaffoldPrelayoutGeometry scaffoldGeometry, double adjustment) {
     final double directionalAdjustment = scaffoldGeometry.textDirection == TextDirection.ltr ? -8 : 8;
     return super.getOffsetX(scaffoldGeometry, adjustment) - directionalAdjustment;
+  }
+
+  @override
+  double getOffsetY(ScaffoldPrelayoutGeometry scaffoldGeometry, double adjustment) {
+    return super.getOffsetY(scaffoldGeometry, adjustment) - 70;
   }
 }
