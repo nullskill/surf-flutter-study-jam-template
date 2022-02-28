@@ -28,7 +28,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final _author = ValueNotifier<ChatUserDto>(const ChatUserDto(name: chatRoomDefaultUsername));
+  final _author = ValueNotifier<ChatUserDto>(const ChatUserDto(name: chatRoomDefaultNickname));
 
   final _scrollController = ScrollController();
   final _scrollPosition = ValueNotifier<double>(0);
@@ -52,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _onChangeNickname(String nickname) {
-    _author.value = ChatUserDto(name: nickname.isEmpty ? chatRoomDefaultUsername : nickname);
+    _author.value = ChatUserDto(name: nickname.isEmpty ? chatRoomDefaultNickname : nickname);
   }
 
   void _onRefreshMessages() {
@@ -148,18 +148,14 @@ class _Body extends StatelessWidget {
                   return const Center(
                     child: Text(chatRoomFailure),
                   );
-                } else {
-                  return const SizedBox.shrink();
                 }
+                return const SizedBox.shrink();
               },
             ),
           ),
           ChatMessageInput(
-            onPressed: (message) {
-              widget.sendMessageBloc.add(
-                SendMessageStart(_author.value.name, message),
-              );
-            },
+            nickname: _author.value.name,
+            sendMessageBloc: widget.sendMessageBloc,
           ),
         ],
       ),

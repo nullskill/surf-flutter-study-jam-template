@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:surf_practice_chat_flutter/assets/colors/colors.dart';
 import 'package:surf_practice_chat_flutter/assets/res/borders.dart';
 import 'package:surf_practice_chat_flutter/assets/strings/strings.dart';
+import 'package:surf_practice_chat_flutter/service/send_message_bloc/send_message_bloc.dart';
 
 /// Input for the chat message widget
 class ChatMessageInput extends StatefulWidget {
-  final Function onPressed;
+  final String nickname;
+  final SendMessageBloc sendMessageBloc;
 
   const ChatMessageInput({
     Key? key,
-    required this.onPressed,
+    required this.nickname,
+    required this.sendMessageBloc,
   }) : super(key: key);
 
   @override
@@ -53,30 +57,42 @@ class _ChatMessageInputState extends State<ChatMessageInput> {
               ),
             ),
             const SizedBox(width: 6),
-            ElevatedButton(
-              onPressed: () {
-                widget.onPressed(_controller.text);
-                _controller.clear();
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.zero,
-                padding: EdgeInsets.zero,
-                shape: const CircleBorder(),
-              ),
-              child: Container(
-                width: 50,
-                height: 50,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [AppColors.gradientStart, AppColors.gradientEnd],
+            BlocBuilder<SendMessageBloc, SendMessageState>(
+              bloc: widget.sendMessageBloc,
+              builder: (context, state) {
+                if (state is SendMessageInProgress) {
+                  return const CircularProgressIndicator();
+                } else if (state is SendMessageFailure) {
+                  return const Text(chatRoomFailure);
+                }
+                return ElevatedButton(
+                  onPressed: () {
+                    widget.sendMessageBloc.add(
+                      SendMessageStart(widget.nickname, _controller.text),
+                    );
+                    _controller.clear();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.zero,
+                    shape: const CircleBorder(),
                   ),
-                ),
-                child: Icon(
-                  Icons.send,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              ),
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [AppColors.gradientStart, AppColors.gradientEnd],
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.send,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
+                );
+              },
             )
           ],
         ),
